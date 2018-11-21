@@ -1,0 +1,166 @@
+ ===================================================
+ |           Syntaxe souboru  vozy.ini             |
+ |              format obrazku vozu                |
+ ===================================================
+
+                   verze syntaxe 2
+               pro STAG v. 1.10 a vyssi
+             pro Stanicar v. 1.60 a vyssi
+
+
+****************************************************
+  U P O Z O R N E N I
+  Vyjma vyjimecnych pripadu pouzvejte nyni pro
+  editaci VOZY.INI webovou sluzbu na
+  http://stanicar.ic.cz
+****************************************************
+
+
+Protoze jsem syntaxi tohoto souboru temer nepopsal,
+napravuji svoje resty nyni.
+
+
+Ucel a funkce VOZY.INI
+======================
+
+Soubor Vozy.ini obsahuje definice vsech vozidel (hnacich i vlecnych),
+ktere umi editor STAG a simulator Stanicar (dale jen Stanicar) zaradit
+do vlaku a, existuje-li odpovidajici obrazek vozu, tento zobrazit.
+
+Tento soubor se siri s editorem STAG, v okamziku, kdy bude implementovan
+do Stanicare, bude siren i se samotnym simulatorem. Soubor se siri i s
+obrazky vozu, az budou mit obrazky neumerne velkou velikost, budou tyto
+sireny samostatne.
+
+Spravcem souboru vozy.ini je momentalne -bbf- (istrasil zavinac centrum.cz)
+
+POKUD EDITUJETE TENTO SOUBOR a chcete jej dat k dispozici ostatnim, prosim zaslete 
+mi svou verzi, zaradim nova data do stavajiciho souboru. 
+
+SOUBOR VOZY.INI JE TEXTOVY - EDITUJTE JEJ V EDITORU PRO CISTY TEXT (Poznamkovy blok,
+ConText, PSPad apod. - ne ve Wordu)
+
+
+Umisteni a syntaxe VOZY.INI
+===========================
+
+Soubor vozy.ini je (zatim) umisten v podadresari vozy\ programu Stag.
+
+Syntaxe VOZY.INI vychazi z INI souboru a vypada takto:
+
+[RADA_VOZU]
+parametr=hodnota
+jiny_parametr=nejaka_hodnota
+
+ V hranatych zavorkach je vzdy uveden typ vozu (jeho oznaceni - rada), po mezere
+ muze nasledovat oznaceni vlastnika, pripadne barevneho provedeni napr.
+ 363 ZSR
+
+ Vuz s radou [default] program preskakuje, ale existence tohoto vozu je povinna.
+
+Popis jednotlivych parametru:
+-----------------------------
+ 
+ typ............urcuje, zda jde o hnaci vozidlo nebo o vuz. Mozne hodnoty:
+                typ=hnaci nebo typ=vuz
+ podtrida.......urcuje zarazeni do skupiny v seznamu pri tvorbe soupravy
+                Hodnota: text (s diakritikou)
+                vozidla se stejnym textem podtridy budou pohromade
+ popis..........textovy popis vozidla, obvykle urceni u lokomotiv,
+                u vozu jeho popis. Pripadne muze obsahovat kratkou informaci
+                o specialitach vozu. Maximalni delka cca 5 slov, vic se nezobrazi
+                (pokud je zajem o delsi popisy, muzeme se domluvit)
+ vykon..........urcuje vykon hnaciho vozidla v kW. Podle teto hodnoty
+                se bude pocitat zrychleni vlaku. 
+                Hodnota: cele cislo bez jednotky (vykon=850)
+ hmotnost.......urcuje hmotnost vozidla v tunach. Podle teto hodnoty
+                se bude pocitat zrychleni vlaku a jeho prechodnost. 
+                Hodnota: cele cislo bez jednotky (hmotnost=52)
+ delka..........urcuje delku vozidla v metrech. 
+                Hodnota: do verze Stag 1.07 cele cislo bez jednotky (delka=17)                      Hodnota: od verze Stag 1.10 realne cislo bez jednotky (delka=17,40) 
+                POZOR: Stag 1.07 a nizsi nepochopi delku s desetinym cislem
+                a nahradi ji nulou. Oprava je mozna takto: nactete ve v. 1.10 
+                nebo vyssi svuj grafikon, tam
+                pro kazdy vlak postupne otevrete dialog razeni vlaku a provedte
+                nejakou zmenu (pridejte a odeberte vuz...) a ulozte zmeny.Pri zmene
+                soupravy se totiz znovu nacitaji data z .ini     
+ osob...........pocet osob, ktery osobni/motorovy vuz pojme (cele cislo). 
+                U loko/nakladnich vozu tento parametr nezapisujte nebo
+                nechte osob=0
+ typ_nakladu....slovni urceni typu nakladu - je mozno urcit jen jeden
+                typ pro cely vuz (napr. typ_nakladu=kusové zboží).Mezi
+                vozy se stejnym typem nakladu bude mozne (nekdy:) naklad
+                prekladat. U osobnich vozu/loko tento parametr nezapisujte.
+ naklad.........urceni mnozstvi nakladu, v tunach nebo zhruba odpovidajicich
+                jednotkach (m3,...) (cele cislo bez jednotky)
+                U osobnich vozu/loko tento parametr nezapisujte nebo nechte naklad=0.
+ max_rych.......maximalni rychlost vozu v km/h (bez jednotky), pokud je vuz tazeny.
+ max_rych_hnaci.maximalni rychlost hnaciho vozidla v km/h (bez jednotky). Hnaci vozidlo
+                MUSI mit definovanu i max_rych pro pripad, kdy je jen tazene. Tyto 
+                hodnoty jsou vetsinou stejne; max_rych nesmi byt nizsi nez max_rych_hnaci.
+                Napr. u podbijecky s pohonem je mozne definovat max_rych=80, ale
+                max_rych_hnaci=20
+ elektro........urcuje potrebu elektrickeho proudu pro provoz vozidla.
+
+                elektro=0 nebo nezadano ... bez potreby el. proudu
+                elektro=1               ... 3kV stejnosmerne
+                elektro=2               ... 25kV 50Hz stridavych
+                elektro=4               ... 1,5kV stejnosmerne (Bechynka...)
+                elektro=8               ... 700V stejnosmerne (ruzne tram rozvody)
+                elektro=16              ... 15kV 16Hz stridavych a podobne (Nemecko)
+
+                U vicesystemovych jednotek zapiste cislo odpovidajici souctu
+                hodnot tech systemu, ktere vozidlo umi: napr. radu 680 (3kV, 25kV, 15kV)
+                bude elektro=19      
+
+                Pokud elektricke hnaci vozidlo vjede na kolej bez troleje nebo s 
+                jinym napetim, ztrati docasne vykon a bude nutne pripojit k nemu
+                lokomotivu jine trakce.         
+
+ vyrobce (nepovinny parametr) ... obsahuje kratkou textovou informaci o vyrobci
+ sila (nepovinny parametr) ... tazna sila hnaciho vozidla (bez jednotky). Pokud
+                nebude zadana, Stanicar ji odhadne z hmotnosti a vykonu lokomotivy.
+
+
+ jine parametry.parametr, ktery program nezna, bude ignorovat. Muzete tak
+                treba doplnit aerodynamicke koeficienty pro pouziti v 
+                budoucnosti, svoje jmeno (autor=Jiri Vonasek) atd.
+                Jmeno parametru (pred zavorkou) prosim zapisujte bez diakritiky. Neni
+                to nutne, ale je to vhodnejsi.
+
+Priklad:
+--------
+
+[680]
+typ=hnaci
+podtrida=El. jednotky vícesystémové
+popis=El. osob. jednotka 
+vyrobce=ALSTOM Itálie (2003)
+vykon=3920
+sila=200
+hmotnost=378
+delka=184,80
+max_rych=230
+max_rych_hnaci=230
+elektro=19
+osob=331
+
+ 
+
+Poznamky:
+---------
+* ridici vuz je __hnaci__ vozidlo s nulovym vykonem, protoze ma stanoviste 
+              strojvedouciho a je-li na zacatku vlaku, vlak muze jet. Pokud by
+              vlak neobsahoval jine hnaci vozidlo s nenulovym vykonem, vlak by
+              mel nulovy vykon a nejel by. (tedy: typ=hnaci !!!)
+
+* od verze 1.10 STAGu se v okenku "Parametry vozu" zobrazuji parametry vozidel
+              s "prelozenymi" identifikatory parametru podle definice ve stag.ini,
+              sekce [VozyIniPolozky]. Pøi zobrazování se také doplòuje zde definovaná
+              jednotka. Parametr Elektro se rozklada na jednotlive soustavy podle
+              sekce [Elektro] ve stag.ini
+
+
+
+-bbf-, 2004
+istrasil zavinac centrum.cz
